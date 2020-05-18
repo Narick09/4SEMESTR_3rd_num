@@ -19,4 +19,14 @@ public class Coordinates {
         this.x = x;
         this.y = y;
     }
+    public void changeX(int shiftX){
+        this.x += shiftX;
+    }
+    public void changeY(int shiftY){
+        this.y += shiftY;
+    }
+    public void changeCoordinates(int x, int y){
+        this.x = x;
+        this.y = y;
+    }
 }

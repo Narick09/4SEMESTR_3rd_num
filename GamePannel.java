@@ -1,13 +1,17 @@
 package ThirdNumPack;
 
 import javax.swing.*;
+import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class GamePannel extends JFrame {
-    Scene presentScene = null;
+    //private JPanel panel = null;
+    private Scene presentScene = null;
     public GamePannel() throws IOException {
         setTitle("GAMA Bullet");
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+        //this.panel = new JPanel();
         // Добавление компонента к фрейму.
         presentScene  = new Scene();
         this.add(presentScene);
@@ -19,21 +23,31 @@ public class GamePannel extends JFrame {
         presentScene  = scene;
         this.add(presentScene);
     }
-    public boolean reDraw(Scene component){
+    public Scene getScene(){
+        return this.presentScene;
+    }
+    public void reDraw(Scene component){
         if(component != null) {
             this.remove(this.presentScene);
             this.presentScene = component;
             //this.presentScene.setScene();
             this.add(this.presentScene);
-            return true;
+            //this.setVisible(true);
         }
-        return false;
     }
-    public boolean reDraw(){
-        return false;
+//    public void Add(ActionListener component){
+//        this.addL(component);
+//    }
+    public void reDraw(ArrayList<Picture> pictures){
+        this.presentScene.setScene(pictures);
+        this.reDraw(presentScene);
     }
-
-        public static final int DEFAULT_WIDTH = 1200;
+    //public boolean reDraw(int index)
+    public void reDraw(int index, Coordinates coordinates){
+        this.presentScene.moveElement(index, coordinates);
+        this.reDraw(presentScene);
+    }
+    public static final int DEFAULT_WIDTH = 1200;
     public static final int DEFAULT_HEIGHT = 900;
 }
 

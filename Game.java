@@ -5,11 +5,14 @@ import java.io.IOException;
 public class Game {
     public void gaming(){
         try {
-            ModelStarShip Spaceship = new ModelStarShip(500, 800);//initialisation
-            View Interface = new View(Spaceship, 1200,900);
-            Controller Control = new Controller(Interface, Spaceship);//initialisation
-            Control.startControl();
-            Control.destroyEnemies();
+            Model Spaceship = new ModelStarShip(500, 800);//initialisation
+            Controller Control = new StandartController(Spaceship);//initialisation
+            View Interface = new StandartView(Spaceship, Control, 1200,900);
+            Interface.openWindow();
+            Interface.drawMenu();
+            Interface.drawInitGameProcess();
+            //Control.controlling();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
