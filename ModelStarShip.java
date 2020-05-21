@@ -4,7 +4,7 @@ import java.io.IOException;
 
 public class ModelStarShip implements Model{
     private Coordinates coordinates;
-    private int moveStep = 1;
+    private int moveStep = 0;
     private Actions Act = null;//shoot
     private int shipHeight = 0;
     private int shipWidth = 0;
@@ -16,17 +16,15 @@ public class ModelStarShip implements Model{
     }
     private Ammunition bullets = null;
 
-    ModelStarShip(int x, int y) throws IOException {
+    ModelStarShip(int x, int y, int moveStep) throws IOException {
         coordinates = new Coordinates();
         coordinates.setCoordinates(x, y);
-        ShipModelPicture = new Picture("C:\\Users\\Даниил\\IdeaProjects\\3rdNum\\out\\production\\3rdNum\\ThirdNumPack\\Pictures\\BattleShip.png", x, y);
-        this.shipHeight = ShipModelPicture.getHeight();
-        this.shipWidth = ShipModelPicture.getWidth();
+        ShipModelPicture = new Picture("C:\\Users\\Даниил\\IdeaProjects\\3rdNum\\out\\production\\3rdNum\\ThirdNumPack\\Pictures\\BattleShip.png", this.coordinates.getX(), this.coordinates.getY());
+        this.shipHeight = ShipModelPicture.getImage().getWidth(null);
+        this.shipWidth = ShipModelPicture.getImage().getWidth(null);
+        this.moveStep = moveStep;
+        System.out.println(this.shipHeight + " " + this.shipWidth);
     }
-//    ModelStarShip(View v){
-//        int w = v.getWidth();
-//        int h = v.getHeight();
-//    }
 
     public void moveLeft(){
         this.coordinates.changeX(-1*moveStep);
@@ -53,6 +51,12 @@ public class ModelStarShip implements Model{
     public int getShipHeight(){
         return this.shipHeight;
     }
+
+    @Override
+    public Picture getPicture() {
+        return this.ShipModelPicture;
+    }
+
     public int getShipWidth(){
         return this.shipWidth;
     }
