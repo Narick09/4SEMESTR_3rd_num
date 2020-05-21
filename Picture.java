@@ -1,16 +1,14 @@
 package ThirdNumPack;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
 
-public class Picture extends JComponent {
+public class Picture extends JLabel {
     private final Image Im;
-    private Coordinates coordinates= new Coordinates();
+    private Coordinates coordinates = new Coordinates();
     public Picture(String FileName, int x, int y) throws IOException {
-        Im = ImageIO.read(new File(FileName));
+        Im = new ImageIcon(FileName).getImage();//ImageIO.read(new File(FileName));
         coordinates.setCoordinates(x, y);
     }
     public Image getImage() {
