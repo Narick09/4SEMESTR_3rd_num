@@ -3,10 +3,10 @@ package ThirdNumPack;
 import java.io.IOException;
 
 public interface View{
-    void openWindow() throws IOException;
+    //void openWindow() throws IOException;
     void drawMenu() throws IOException;
-    void drawInitGameProcess() throws IOException;
-    boolean drawGameScene(int i) throws IOException;
+    //void drawInitGameProcess() throws IOException;
+    boolean drawGameScene() throws IOException;
 
     int getHeight();
     int getWidth();
