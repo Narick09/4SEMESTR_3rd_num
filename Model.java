@@ -12,4 +12,5 @@ public interface Model {
     void doACt();
     int getShipWidth();
     int getShipHeight();
+    Picture getPicture();
 }
