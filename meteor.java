@@ -44,4 +44,9 @@ public class meteor implements Model{
     public int getShipHeight() {
         return 0;
     }
+
+    @Override
+    public Picture getPicture() {
+        return null;
+    }
 }
