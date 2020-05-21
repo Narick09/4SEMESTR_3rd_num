@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
-import java.util.ArrayList;
 
 //создаем окно с менюшкой
 //в нем кнопка старт
@@ -26,7 +25,10 @@ public class StandartView implements View, ActionListener {
     private Statistic statistic;
 
     @Override
-    public void actionPerformed(ActionEvent actionEvent) {}
+    public void actionPerformed(ActionEvent actionEvent) {
+        C.moving(true, false, false,false);
+        //frame.reDraw(1,S.getCoordinates());
+    }
 
     private class Menu{
         JButton Start;
@@ -38,77 +40,56 @@ public class StandartView implements View, ActionListener {
         this.S = s;
         this.C = c;
         statistic = new Statistic();
-        frame = new GamePannel();
+        frame = new GamePannel(this.S);
+        this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         description = "smt description";
-
-
+        this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.width = width;
         this.height = height;
         this.frame.setSize(width, height);
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        timer = new Timer(20, this);
-        timer.start();
-        Thread run = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    try {
-                        frame.reDraw(1,S.getCoordinates());
-                        frame.setVisible(true);
-                        Thread.sleep(20); //1000 - 1 сек
-                    } catch (InterruptedException ex) {
-                        ex.printStackTrace();
-                    }
-                }
-            }
-        });
+        //можно ли добавить 2 кейлистенера, чтобы они работали параллельно?
         frame.addKeyListener(new KeyListener() {
             public void keyPressed(KeyEvent e) {
                 int key = e.getKeyCode();
                 if(key == KeyEvent.VK_W) {
                     C.moving(false,false,true,false);
-                    System.out.println("wwwwwwwwwwwwwwwwwww");
+                    //System.out.println("wwwwwwwwwwwwwwwwwww");
+                    frame.reDraw(1,S.getCoordinates());
                     //delete++;
                 }
                 if(key == KeyEvent.VK_S) {
                     C.moving(false,false,false,true);
-                    System.out.println("sssssssssssssssssss");
-                    //frame.reDraw(1,S.getCoordinates());
+                    //System.out.println("sssssssssssssssssss");
+                    frame.reDraw(1,S.getCoordinates());
                     //delete++;
                 }
                 if(key == KeyEvent.VK_A) {
                     C.moving(false,true,false,false);
-                    System.out.println("aaaaaaaaaaaaaaaaaaaa");
-                    //frame.reDraw(1,S.getCoordinates());
+                    //System.out.println("aaaaaaaaaaaaaaaaaaaa");
+                    frame.reDraw(1,S.getCoordinates());
                     //delete++;
                 }
                 if(key == KeyEvent.VK_D) {
                     C.moving(true,false,false,false);
-                    System.out.println("dddddddddddddddddddd");
-                    //frame.reDraw(1,S.getCoordinates());
+                    //System.out.println("dddddddddddddddddddd");
+                    frame.reDraw(1,S.getCoordinates());
                     //delete++;
                 }
             }
             public void keyReleased(KeyEvent e) {
+                int key = e.getKeyCode();
+                if(key == KeyEvent.VK_Q){
+                    drawGameScene();
+                    frame.reDraw(1,S.getCoordinates());
+                }
                 //System.out.println("wwwwwwwwwwwwwwwww");
             }
             public void keyTyped(KeyEvent e) {
                 //System.out.println("rrrrrrrrrrrrrrrrrrrrrrrrrrr");
             }
         });
-       run.start();
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        //frame.Add(this);
     }
 
-//    public void setWindowParameters(int width, int height) {
-//        this.width = width;
-//        this.height = height;
-//        this.frame.setSize(width, height);
-//    }
-    public void openWindow() throws IOException {
-        this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    }
     public int getWidth(){
         return width;
     }
@@ -118,19 +99,14 @@ public class StandartView implements View, ActionListener {
 
     public void drawMenu() {
     }
-    public void drawInitGameProcess() throws IOException {
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
-    }
     public void checkModel(ModelStarShip S){
         this.frame.getScene().moveElement(0, this.S.getCoordinates());
     }
     public boolean drawShip(){
-
         return false;//тут см за изменениями в координатах, и от них вызываем перерисовку картины на мув корабля.
         //PS реальные координаты меняем или не меняем только контроллером! Он же и смотрит за тем, чтобы корабль не вылезал за рамки.
     }
-    public boolean drawGameScene(int i){
+    public boolean drawGameScene(){
 //        ArrayList<Picture> pictures = new ArrayList<>();
 //        try {
 //            pictures.add(new Picture("C:\\Users\\Даниил\\IdeaProjects\\3rdNum\\out\\production\\3rdNum\\ThirdNumPack\\Pictures\\Background.jpg",0, 0));
@@ -142,16 +118,16 @@ public class StandartView implements View, ActionListener {
 //        frame.reDraw(pictures);
 
         // период срабатывания таймера мс
-        timer = new Timer(20, this);
+        timer = new Timer(100, this);
         timer.start();
         Thread run = new Thread(new Runnable() {
             @Override
             public void run() {
                 while (true) {
                     try {
-
-                        C.moving(true, false, false,false);
-                        Thread.sleep(20); //1000 - 1 сек
+                        //C.moving(true, false, false,false);
+                        frame.reDraw(1,S.getCoordinates());
+                        Thread.sleep(100);
                     } catch (InterruptedException ex) {
                         ex.printStackTrace();
                     }
@@ -165,7 +141,6 @@ public class StandartView implements View, ActionListener {
         while(!skipDescriptionFlag){
             //doing smt
             //flag = true, if button "Skip" is pressed
-
         }
     }
 }
