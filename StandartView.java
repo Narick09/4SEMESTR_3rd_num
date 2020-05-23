@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
+import java.util.ArrayList;
 
 //создаем окно с менюшкой
 //в нем кнопка старт
@@ -17,6 +18,7 @@ public class StandartView implements View, ActionListener {
     private String description;
     private boolean skipDescriptionFlag = false;
     private Model S = null;
+    private MeteorController M = null;
     private Controller C = null;
 
     Timer timer = null;
@@ -26,9 +28,14 @@ public class StandartView implements View, ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-        C.moving(true, false, false,false);
-        //frame.reDraw(1,S.getCoordinates());
+        M.moving(false, false, false,true);
+        //System.out.println("smtsssssssssssssssssssssssssssssssss");
+        frame.repaint();
     }
+
+//    public void scanSpaceObjects(MeteorController M) {
+//        this.M = M;
+//    }
 
     private class Menu{
         JButton Start;
@@ -36,12 +43,17 @@ public class StandartView implements View, ActionListener {
         JButton Score;
     }
 
-    StandartView(Model s, Controller c, int width, int height) throws IOException {
+    StandartView(Model s, MeteorController M, Controller c, int width, int height) throws IOException {
         this.S = s;
         this.C = c;
         statistic = new Statistic();
-        frame = new GamePannel(this.S);
-        this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.M = M;
+
+        frame = new GamePannel();
+        frame.setComponent(this.S.getPicture());
+        for(meteor m:M.getMeteors())
+            frame.setComponent(m.getPicture());
+
         description = "smt description";
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.width = width;
@@ -53,26 +65,30 @@ public class StandartView implements View, ActionListener {
                 int key = e.getKeyCode();
                 if(key == KeyEvent.VK_W) {
                     C.moving(false,false,true,false);
+                    //M.moving(false,true,false,false);
                     //System.out.println("wwwwwwwwwwwwwwwwwww");
-                    frame.reDraw(1,S.getCoordinates());
+                    frame.repaint();
                     //delete++;
                 }
                 if(key == KeyEvent.VK_S) {
                     C.moving(false,false,false,true);
+                    //M.moving(false,true,false,false);
                     //System.out.println("sssssssssssssssssss");
-                    frame.reDraw(1,S.getCoordinates());
+                    frame.repaint();
                     //delete++;
                 }
                 if(key == KeyEvent.VK_A) {
                     C.moving(false,true,false,false);
+                    //M.moving(false,true,false,false);
                     //System.out.println("aaaaaaaaaaaaaaaaaaaa");
-                    frame.reDraw(1,S.getCoordinates());
+                    frame.repaint();
                     //delete++;
                 }
                 if(key == KeyEvent.VK_D) {
                     C.moving(true,false,false,false);
+                    //M.moving(false,true,false,false);
                     //System.out.println("dddddddddddddddddddd");
-                    frame.reDraw(1,S.getCoordinates());
+                    frame.repaint();
                     //delete++;
                 }
             }
@@ -80,7 +96,7 @@ public class StandartView implements View, ActionListener {
                 int key = e.getKeyCode();
                 if(key == KeyEvent.VK_Q){
                     drawGameScene();
-                    frame.reDraw(1,S.getCoordinates());
+                    //frame.repaint();
                 }
                 //System.out.println("wwwwwwwwwwwwwwwww");
             }
@@ -100,13 +116,9 @@ public class StandartView implements View, ActionListener {
     public void drawMenu() {
     }
     public void checkModel(ModelStarShip S){
-        this.frame.getScene().moveElement(0, this.S.getCoordinates());
+//        this.frame.getScene().moveElement(0, this.S.getCoordinates());
     }
-    public boolean drawShip(){
-        return false;//тут см за изменениями в координатах, и от них вызываем перерисовку картины на мув корабля.
-        //PS реальные координаты меняем или не меняем только контроллером! Он же и смотрит за тем, чтобы корабль не вылезал за рамки.
-    }
-    public boolean drawGameScene(){
+    public void drawGameScene(){
 //        ArrayList<Picture> pictures = new ArrayList<>();
 //        try {
 //            pictures.add(new Picture("C:\\Users\\Даниил\\IdeaProjects\\3rdNum\\out\\production\\3rdNum\\ThirdNumPack\\Pictures\\Background.jpg",0, 0));
@@ -116,27 +128,30 @@ public class StandartView implements View, ActionListener {
 //        }
 //        //Scene sc = new Scene(pictures);
 //        frame.reDraw(pictures);
-
-        // период срабатывания таймера мс
-        timer = new Timer(100, this);
-        timer.start();
-        Thread run = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    try {
-                        //C.moving(true, false, false,false);
-                        frame.reDraw(1,S.getCoordinates());
-                        Thread.sleep(100);
-                    } catch (InterruptedException ex) {
-                        ex.printStackTrace();
-                    }
-                }
-            }
-        });
-        run.start();
-        return true;
+        timer = new Timer(100, this);//период срабатывания
+        timer.start();//поток с акшион листенером
+//        Thread run = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                while (true) {
+//                    try {
+//                        M.moving(false, false, false,false);
+//                        frame.reDraw(1,S.getCoordinates());
+//                        Thread.sleep(100);
+//                    } catch (InterruptedException ex) {
+//                        ex.printStackTrace();
+//                    }
+//                }
+//            }
+//        });
+//        run.start();//поток с раном треда
     }
+
+    @Override
+    public JFrame getFrame() {
+        return this.frame;
+    }
+
     public void printDescrition() {
         while(!skipDescriptionFlag){
             //doing smt

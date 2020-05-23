@@ -10,7 +10,7 @@ public interface Model {
     void moveDown();
     void moveUp();
     void doACt();
-    int getShipWidth();
-    int getShipHeight();
+    int getObjectWidth();
+    int getObjectHeight();
     Picture getPicture();
 }

@@ -15,6 +15,7 @@ public class ModelStarShip implements Model{
 
     }
     private Ammunition bullets = null;
+    private int health = 10;
 
     ModelStarShip(int x, int y, int moveStep) throws IOException {
         coordinates = new Coordinates();
@@ -24,6 +25,7 @@ public class ModelStarShip implements Model{
         this.shipWidth = ShipModelPicture.getImage().getWidth(null);
         this.moveStep = moveStep;
         System.out.println(this.shipHeight + " " + this.shipWidth);
+        ShipModelPicture.setCoordinates(this.coordinates);
     }
 
     public void moveLeft(){
@@ -48,8 +50,15 @@ public class ModelStarShip implements Model{
     public int getY(){
         return this.coordinates.getY();
     }
-    public int getShipHeight(){
+    public int getObjectHeight(){
         return this.shipHeight;
+    }
+
+    public void hit(int damage){
+        this.health -= damage;
+    }
+    public boolean isLiving(){
+        return this.health >= 0;
     }
 
     @Override
@@ -57,11 +66,15 @@ public class ModelStarShip implements Model{
         return this.ShipModelPicture;
     }
 
-    public int getShipWidth(){
+    public int getObjectWidth(){
         return this.shipWidth;
     }
 //shooting
     public void doACt(){
 
+    }
+
+    public void setHealth(int health){
+        this.health = health;
     }
 }
